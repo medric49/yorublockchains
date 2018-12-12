@@ -21,9 +21,12 @@ const initHttpServer = (myHttpPort: number) => {
         }
     });
 
+    /*
     app.get('/blocks', (req, res) => {
         res.send(getBlockchain());
     });
+    */
+    /*
     app.post('/mineRawBlock', (req, res) => {
         if (req.body.data == null) {
             res.send('data parameter is missing');
@@ -36,8 +39,27 @@ const initHttpServer = (myHttpPort: number) => {
             res.send(newBlock);
         }
     });
+    */
 
-    app.post('/mineBlock', (req, res) => {
+    app.post('/init-private-key', (req, res) => {
+        try {
+            initWallet(req.body.user_id);
+            res.send({
+                'status' : 1
+            });
+        } catch (e) {
+            console.log(e.message);
+            res.status(400).send(e.message);
+        }
+    });
+    app.get('/test', (req, res) => {
+        res.send(
+            {
+                'status' : 1
+            }
+        );
+    });
+    app.post('/new-product', (req, res) => {
         const newBlock: Block = generateNextBlock(req.body.productId);
         if (newBlock === null) {
             res.status(400).send('could not generate block');
@@ -46,12 +68,12 @@ const initHttpServer = (myHttpPort: number) => {
         }
     });
 
-    app.get('/balance', (req, res) => {
+    app.get('/products', (req, res) => {
         const balance: number[] = getAccountProduct();
-        res.send({'balance': balance});
+        res.send({'ids': balance});
     });
 
-    app.post('/mineTransaction', (req, res) => {
+    app.post('/new-transaction', (req, res) => {
         const address = req.body.address;
         const productId = req.body.productId;
         try {
@@ -78,4 +100,6 @@ const initHttpServer = (myHttpPort: number) => {
 
 initHttpServer(httpPort);
 initP2PServer(p2pPort);
+/*
 initWallet();
+*/

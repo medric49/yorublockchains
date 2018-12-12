@@ -17,18 +17,18 @@ const getPublicFromWallet = (): string => {
     return key.getPublic().encode('hex');
 };
 
-const generatePrivateKey = (): string => {
+const generatePrivateKey = (userCode: number): string => {
     const keyPair = EC.genKeyPair();
-    const privateKey = keyPair.getPrivate();
+    const privateKey = keyPair.getPrivate() + 1000000;
     return privateKey.toString(16);
 };
 
-const initWallet = () => {
+const initWallet = (userCode: number) => {
     // let's not override existing private keys
     if (existsSync(privateKeyLocation)) {
         return;
     }
-    const newPrivateKey = generatePrivateKey();
+    const newPrivateKey = generatePrivateKey(userCode);
 
     writeFileSync(privateKeyLocation, newPrivateKey);
     console.log('new wallet with private key created');

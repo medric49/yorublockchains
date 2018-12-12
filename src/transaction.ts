@@ -126,23 +126,23 @@ const hasDuplicates = (txIns: TxIn[]): boolean => {
 
 const validateCoinbaseTx = (transaction: Transaction, blockIndex: number): boolean => {
     if (transaction == null) {
-        console.log('the first transaction in the block must be coinbase transaction');
+        // console.log('the first transaction in the block must be coinbase transaction');
         return false;
     }
     if (getTransactionId(transaction) !== transaction.id) {
-        console.log('invalid coinbase tx id: ' + transaction.id);
+        // console.log('invalid coinbase tx id: ' + transaction.id);
         return false;
     }
     if (transaction.txIns.length !== 1) {
-        console.log('one txIn must be specified in the coinbase transaction');
+        // console.log('one txIn must be specified in the coinbase transaction');
         return;
     }
     if (transaction.txIns[0].txOutIndex !== blockIndex) {
-        console.log('the txIn signature in coinbase tx must be the block height');
+        // console.log('the txIn signature in coinbase tx must be the block height');
         return false;
     }
     if (transaction.txOuts.length !== 1) {
-        console.log('invalid number of txOuts in coinbase transaction');
+        // console.log('invalid number of txOuts in coinbase transaction');
         return false;
     }
     return true;
